@@ -7,9 +7,9 @@ define('BASE_ROOT', dirname(__FILE__, 2) . '/');
 define('APP_ROOT', dirname(__FILE__, 1) . '/');
 
 // http://localhost/php-mvc
-define('URL_ROOT', 'http://localhost/php-mvc/');
+define('URL_ROOT', 'http://localhost/php-shared-gallery/');
 
-define('SITE_NAME', 'PHP-MVC');
+define('SITE_NAME', 'Shared Gallery');
 
 mb_internal_encoding("UTF-8");
 
