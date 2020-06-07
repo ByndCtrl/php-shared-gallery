@@ -1,14 +1,10 @@
 <?php
 
 use Core\Controller;
+use Core\View;
 
 class PagesController extends Controller
 {
-    public function __construct()
-    {
-
-    }
-
     public function index()
     {    
         $data = 
@@ -16,7 +12,8 @@ class PagesController extends Controller
             'title' => 'Home'
         ];
 
-        $this->view('Pages/index', $data);
+        $view = new View();
+        $view->render('index', $data);
     }
 
     public function about()
@@ -26,6 +23,7 @@ class PagesController extends Controller
             'title' => 'About',
         ];
 
-        $this->view('Pages/about', $data);
+        $view = new View();
+        $view->render('about', $data);
     }
 }

@@ -2,22 +2,19 @@
 
 namespace Core;
 
+use Throwable;
+
 abstract class Controller 
 {
-    public function model($model)
+    protected function model($model)
     {
-        require '../App/Models/' . $model . '.php';
-    }
-
-    public function view($view)
-    {
-        if(file_exists('../App/Views/' . $view . '.view.php'))
+        try 
         {
-            require_once '../App/Views/' . $view . '.view.php';
-        }
-        else
+            require '../App/Models/' . ucwords($model) . '.php';
+        } 
+        catch (Throwable $t) 
         {
-            die('No view found.');
+            echo $t->getMessage();
         }
     }
 }

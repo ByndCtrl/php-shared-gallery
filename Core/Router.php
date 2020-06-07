@@ -13,7 +13,7 @@ class Router
     {
         $url = $this->getUrl();  
 
-        if($url != null && file_exists('../App/Controllers/' . ucwords($url[0]) . 'php'))
+        if($url != null && file_exists('../App/Controllers/' . ucwords($url[0]) . 'Controller.php'))
         {
             $this->controller = ucwords($url[0]) . 'Controller';
             unset($url[0]);
@@ -30,6 +30,10 @@ class Router
                 $this->action = $url[1];
 
                 unset($url[1]);
+            }
+            else
+            {
+                $this->action = 'index';
             }
         }
 

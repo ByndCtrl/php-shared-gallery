@@ -11,12 +11,17 @@ class Database
     private $dbh;
     private $stmt;
     private $error;
+    
+    public function __construct()
+    {
+        $this->connect();   
+    }
 
     /**
      * Initialize PDO connection.
      * Set the DBH as the new instance of PDO.
      */
-    public function __construct()
+    private function connect()
     {
         $dsn = 'mysql:host=' . Credentials::DB_HOST . ';dbname=' . Credentials::DB_NAME;
 
@@ -24,7 +29,7 @@ class Database
             PDO::ATTR_PERSISTENT => true,
             PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
         );
-        
+
         try 
         {
             $this->dbh = new PDO($dsn, Credentials::DB_USER, Credentials::DB_PASSWORD, $options);
@@ -34,6 +39,11 @@ class Database
             $this->error = $e->getMessage();
             echo $this->error;
         }
+    }
+
+    public function disconnect()
+    {
+        $this->dbh = null;
     }
 
     /**
