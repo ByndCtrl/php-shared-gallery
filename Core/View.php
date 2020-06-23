@@ -1,22 +1,36 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Core;
 
 class View
 {
-    public function render($view, $data = [])
+    /**
+     * @param string $view
+     * @param array $data
+     * @param array $errors
+     * 
+     * @return void
+     */
+    public function render(string $view, array $data = [], array $errors = []) : void
    {
         ob_start();
 
         extract($data);
 
+        if (isset($errors) && $errors != null) 
+        {
+            extract($errors);
+        }
+        
         try 
         {
-            require APP_ROOT . "/Views/Pages/$view.view.php";
+            require APP_ROOT . "Views/$view.view.php";
         } 
         catch (\Throwable $t) 
         {
-            throw $t;
+            $t->getMessage();
         }
         
         echo ob_get_clean();

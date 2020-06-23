@@ -18,6 +18,10 @@ class Router
             $this->controller = ucwords($url[0]) . 'Controller';
             unset($url[0]);
         }
+        else
+        {
+            $this->controller = 'PagesController';
+        }
 
         require_once '../App/Controllers/' . $this->controller . '.php';
 

@@ -1,5 +1,7 @@
 <?php
 
+define('DS', DIRECTORY_SEPARATOR);
+
 // /var/www/html/php-shared-gallery/
 define('BASE_ROOT', dirname(__FILE__, 2) . '/');
 
@@ -16,7 +18,6 @@ mb_internal_encoding("UTF-8");
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-
 spl_autoload_register(function ($class) 
 {
     $file = BASE_ROOT . str_replace('\\', '/', $class) .'.php';
@@ -26,5 +27,3 @@ spl_autoload_register(function ($class)
         require $file;
     }
 });
-
-

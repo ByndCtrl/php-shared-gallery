@@ -1,121 +1,84 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Core;
 
 use PDO;
-use PDOException;
+use PDOStatement;
+use BadMethodCallException;
 use App\Credentials;
 
 class Database 
 {
-    private $dbh;
-    private $stmt;
-    private $error;
+    protected static ?Database $instance = null;
+    protected ?PDO $pdo = null;
+
+    final function __construct() 
+    {
+        if (self::$instance === null)
+        {
+            $dsn = 'mysql:host=' . Credentials::DB_HOST . ';dbname=' . Credentials::DB_NAME;
+
+            $opt = array(
+                PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+                PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+                PDO::ATTR_EMULATE_PREPARES => FALSE,
+                PDO::ATTR_PERSISTENT => TRUE
+            );
     
-    public function __construct()
-    {
-        $this->connect();   
-    }
-
-    /**
-     * Initialize PDO connection.
-     * Set the DBH as the new instance of PDO.
-     */
-    private function connect()
-    {
-        $dsn = 'mysql:host=' . Credentials::DB_HOST . ';dbname=' . Credentials::DB_NAME;
-
-        $options = array(
-            PDO::ATTR_PERSISTENT => true,
-            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-        );
-
-        try 
-        {
-            $this->dbh = new PDO($dsn, Credentials::DB_USER, Credentials::DB_PASSWORD, $options);
-        } 
-        catch (PDOException $e) 
-        {
-            $this->error = $e->getMessage();
-            echo $this->error;
+            $this->pdo = new PDO($dsn, Credentials::DB_USER, Credentials::DB_PASSWORD, $opt);
         }
     }
 
-    public function disconnect()
-    {
-        $this->dbh = null;
-    }
+    final function __clone() {}
 
     /**
-     * Prepare statement.
+     * @return Database
      */
-    public function query($sql)
+    public static function instance() : Database
     {
-        $this->stmt = $this->dbh->prepare($sql);
-    }
-
-    /**
-     * Bind variables to  proper types.
-     * Types allowed: integer, string, bool and null.
-     */
-    public function bind($param, $value, $type = null)
-    {
-        if (is_null($type)) 
+        if (self::$instance === null)
         {
-            switch (1) 
-            {
-                case is_int($value):
-                    $type = PDO::PARAM_INT;
-                    break;
-                
-                case is_bool($value):
-                    $type = PDO::PARAM_BOOL;
-                    break;
-
-                case is_null($value):
-                    $type = PDO::PARAM_NULL;
-                    break;
-
-                default:
-                    $type = PDO::PARAM_STR;
-                    
-            }
+            self::$instance = new self;
         }
 
-        $this->stmt->bindValue($param, $value, $type);
+        return self::$instance;
     }
-
+    
     /**
-     * Execute prepared statement.
+     * @param string $method
+     * @param array $args
+     * 
+     * @return PDOStatement
      */
-    private function execute()
+    public function __call(string $method = '', array $args = []) : PDOStatement
     {
-        return $this->stmt->execute();
+        if (is_callable(array($this->pdo, $method))) 
+        {
+            return call_user_func_array(array($this->pdo, $method), $args);
+        }
+        else 
+        {
+            throw new BadMethodCallException('Undefined method Database::' . $method);
+        }
     }
 
     /**
-     * Get a set of rows.
+     * @param string $sql
+     * @param array $args
+     * 
+     * @return PDOStatement
      */
-    public function getAll()
+    public function run(string $sql = '', array $args = []) : PDOStatement
     {
-        $this->execute();
-        return $this->stmt->fetchAll(PDO::FETCH_OBJ);
-    }
+        if (!$args)
+        {
+            return $this->query($sql);
+        }
 
-    /**
-    * Get a single row.
-    */
-    public function getSingle()
-    {
-        $this->execute();
-        return $this->stmt->fetch(PDO::FETCH_OBJ);
-    }
-
-    /**
-     * Get the row count of the statement.
-     */
-    public function rowCount()
-    {
-        return $this->statement->rowCount();
+        $stmt = self::instance()->prepare($sql);
+        $stmt->execute($args);
+        return $stmt;
     }
 }

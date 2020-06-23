@@ -1,20 +1,10 @@
 <?php
 
-namespace Core;
+declare(strict_types = 1);
 
-use Throwable;
+namespace Core;
 
 abstract class Controller 
 {
-    protected function model($model)
-    {
-        try 
-        {
-            require '../App/Models/' . ucwords($model) . '.php';
-        } 
-        catch (Throwable $t) 
-        {
-            echo $t->getMessage();
-        }
-    }
+    
 }

@@ -1,13 +1,17 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Core;
+
+use Core\Database;
 
 abstract class Model
 {
-    protected $db = null;
+    protected ?Database $DB = null;
 
     public function __construct()
     {
-        $this->db = new Database();
+        $this->DB = Database::instance();
     }
 }
