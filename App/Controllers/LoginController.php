@@ -1,16 +1,23 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
+
+namespace App\Controllers;
 
 use Core\Controller;
 use Core\View;
-use App\Models\User;
 use Core\Util\Input;
+use App\Models\User;
 
+/**
+ * Class LoginController
+ * @package App\Controllers
+ */
 class LoginController extends Controller
 {
     private ?string $username = null;
     private ?string $password = null;
+    private ?int $userId = null;
 
     private array $data = [];
     private array $errors = [];
@@ -20,6 +27,8 @@ class LoginController extends Controller
 
     public function __construct()
     {
+        parent::__construct();
+
         $this->user = new User();
         $this->view = new View();
 
@@ -36,43 +45,45 @@ class LoginController extends Controller
         ];
     }
 
-    public function index() : void
+    public function login(): void
     {
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') 
+        if ($_SERVER['REQUEST_METHOD'] == 'POST')
         {
             $post = Input::validatePost();
 
             $this->username = $post['username'];
             $this->password = $post['password'];
 
-            // Check every input. Add data and errors found to their respective arrays.
+            // Check inputs. Add data and errors found to their respective arrays.
             $this->validateLogin($this->username, $this->password);
 
-            if(!array_filter($this->errors))
+            if (!array_filter($this->errors))
             {
                 // Login user if there are no errors found during validation.
-                $this->view->render('Users/management', $this->data, $this->errors);
+                $this->session->login($this->userId);
+
+                $this->redirect('Management');
             }
             else
             {
                 // Render with errors.
-                $this->view->render('Pages/login', $this->data, $this->errors);
+                $this->view->render('Users/Login', $this->data, $this->errors);
             }
         }
         else
         {
             // Render empty login form.
-            $this->view->render('Pages/login', $this->data, $this->errors);
+            $this->view->render('Users/Login', $this->data, $this->errors);
         }
     }
-    
+
     /**
      * @param string $username
      * @param string $password
-     * 
+     *
      * @return void
      */
-    private function validateLogin(string $username, string $password) : void
+    private function validateLogin(string $username, string $password): void
     {
         $this->validateUsername($username);
         $this->validatePassword($password);
@@ -80,19 +91,19 @@ class LoginController extends Controller
 
     /**
      * @param string $username
-     * 
+     *
      * @return void
      */
-    private function validateUsername(string $username) : void
-    {      
-        if (!empty($username)) 
+    private function validateUsername(string $username): void
+    {
+        if (!empty($username))
         {
-            if (!$this->user->showByUsername($username)) 
+            if (!$this->user->showByUsername($username))
             {
                 $this->errors['usernameError'] = USERNAME_NOT_EXISTS_ERROR;
             }
         }
-        else 
+        else
         {
             $this->errors['usernameError'] = USERNAME_MISSING_ERROR;
         }
@@ -103,25 +114,26 @@ class LoginController extends Controller
 
     /**
      * @param string $password
-     * 
+     *
      * @return void
      */
-    private function validatePassword(string $password) : void
+    private function validatePassword(string $password): void
     {
         $password = $this->password;
 
-        if ($this->user->showByUsername($this->username)) 
+        if ($this->user->showByUsername($this->username))
         {
             $hashedPassword = $this->user->showByUsername($this->username)['password'];
+            $this->userId = $this->user->showByUsername($this->username)['id'];
         }
         else
         {
-            $hashedPassword = null;
+            $hashedPassword = 'null';
         }
 
-        if (!empty($password)) 
+        if (!empty($password))
         {
-            if (!password_verify($password, $hashedPassword)) 
+            if (!password_verify($password, $hashedPassword))
             {
                 $this->errors['passwordError'] = LOGIN_ERROR;
             }
@@ -132,5 +144,11 @@ class LoginController extends Controller
         }
 
         $this->data['password'] = $password;
+    }
+
+    public function logout()
+    {
+        $this->session->logout();
+        $this->redirect(' ');
     }
 }

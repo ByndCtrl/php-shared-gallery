@@ -1,59 +1,79 @@
-<?php 
+<?php
+
+declare(strict_types=1);
 
 namespace Core;
 
-class Router 
-{
-    protected $url = '/';
-    protected $controller = 'PagesController';
-    protected $action = 'index';
-    protected $params = [];
-    
-    public function __construct()
-    {
-        $url = $this->getUrl();  
+use \Exception;
 
-        if($url != null && file_exists('../App/Controllers/' . ucwords($url[0]) . 'Controller.php'))
+/**
+ * Class Router
+ * @package Core
+ */
+class Router
+{
+    /**
+     * @var Request|null
+     */
+    private ?Request $request = null;
+    /**
+     * @var Route|null
+     */
+    private ?Route $route = null;
+
+    /**
+     * Router constructor.
+     * @param Route $route
+     * @param Request $request
+     */
+    public function __construct(Route $route, Request $request)
+    {
+        $this->request = $request;
+        $this->route = $route;
+    }
+
+    /**
+     * @param string $requestMethod
+     * @param string $url
+     *
+     * @return Controller|void|null
+     * @throws Exception
+     */
+    public function direct(string $requestMethod, string $url)
+    {
+        if (array_key_exists($url, $this->route->routes[$requestMethod]))
         {
-            $this->controller = ucwords($url[0]) . 'Controller';
-            unset($url[0]);
+            $this->dispatch(...explode('@', $this->route->routes[$requestMethod][$url]));
         }
         else
         {
-            $this->controller = 'PagesController';
+            $this->dispatch(...explode('@', $this->route->routes[$requestMethod]['404']));
         }
-
-        require_once '../App/Controllers/' . $this->controller . '.php';
-
-        $this->controller = new $this->controller;
-
-        if(isset($url[1]))
-        {
-            if(method_exists($this->controller, $url[1]))
-            {
-                $this->action = $url[1];
-
-                unset($url[1]);
-            }
-            else
-            {
-                $this->action = 'index';
-            }
-        }
-
-        $this->params = $url ? array_values($url) : [];
-
-        call_user_func_array([$this->controller, $this->action], $this->params);
     }
 
-    public function getUrl()
+    /**
+     * @param string $controller
+     * @param string $action
+     *
+     * @return void
+     * @throws Exception
+     */
+    public function dispatch(string $controller, string $action): void
     {
-        if(isset($_GET['url']))
+        $controller = '\App\Controllers\\' . $controller;
+
+        if (!class_exists($controller))
         {
-            $url = rtrim($_GET['url'], '/');
-            $url = filter_var($url, FILTER_SANITIZE_URL);
-            $url = explode('/', $url);
-            return $url;
+            throw new Exception("{$controller} does not exist.");
         }
+
+        $controller = new $controller();
+
+        if (!method_exists($controller, $action))
+        {
+            throw new Exception("{$controller} does not respond to {$action} action.");
+        }
+
+        $controller->$action();
     }
 }

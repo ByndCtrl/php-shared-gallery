@@ -1,61 +1,50 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
+
+namespace App\Controllers;
 
 use Core\Controller;
 use Core\View;
 
+/**
+ * Class PagesController
+ * @package App\Controllers
+ */
 class PagesController extends Controller
 {
-    /**
-     * @return void
-     */
-    public function index() : void
-    {    
-        $data = [
-            'title' => 'Home'
-        ];
+    private ?View $view = null;
 
-        $view = new View();
-        $view->render('Pages/index', $data);
+    public function __construct()
+    {
+        parent::__construct();
+        $this->view = new View();
     }
 
-    /**
-     * @return void
-     */
-    public function about() : void
+    public function index()
     {
         $data = [
-            'title' => 'About',
+            'title' => 'Landing'
         ];
 
-        $view = new View();
-        $view->render('Pages/about', $data);
+        $this->view->render('Pages/Landing', $data);
     }
 
-    /**
-     * @return void
-     */
-    public function login() : void
+    public function about()
     {
         $data = [
-            'title' => 'Login',
+            'title' => 'About'
         ];
 
-        $view = new View();
-        $view->render('Pages/login', $data);
+        $this->view->render('Pages/About', $data);
     }
 
-    /**
-     * @return void
-     */
-    public function register() : void
+    public function notFound()
     {
         $data = [
-            'title' => 'Register'
+            'title' => '404'
         ];
 
-        $view = new View();
-        $view->render('Pages/register', $data);
+        $this->view->render('Pages/404', $data);
     }
 }

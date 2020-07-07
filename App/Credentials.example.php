@@ -2,6 +2,10 @@
 
 namespace App;
 
+/**
+ * Class Credentials
+ * @package App
+ */
 class Credentials
 {
     const DB_HOST = 'localhost';

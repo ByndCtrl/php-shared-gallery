@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Core;
 
@@ -9,12 +9,16 @@ use PDOStatement;
 use BadMethodCallException;
 use App\Credentials;
 
-class Database 
+/**
+ * Class Database
+ * @package Core
+ */
+class Database
 {
     protected static ?Database $instance = null;
     protected ?PDO $pdo = null;
 
-    final function __construct() 
+    final function __construct()
     {
         if (self::$instance === null)
         {
@@ -26,17 +30,19 @@ class Database
                 PDO::ATTR_EMULATE_PREPARES => FALSE,
                 PDO::ATTR_PERSISTENT => TRUE
             );
-    
+
             $this->pdo = new PDO($dsn, Credentials::DB_USER, Credentials::DB_PASSWORD, $opt);
         }
     }
 
-    final function __clone() {}
+    final function __clone()
+    {
+    }
 
     /**
      * @return Database
      */
-    public static function instance() : Database
+    public static function instance(): Database
     {
         if (self::$instance === null)
         {
@@ -45,20 +51,20 @@ class Database
 
         return self::$instance;
     }
-    
+
     /**
      * @param string $method
      * @param array $args
-     * 
+     *
      * @return PDOStatement
      */
-    public function __call(string $method = '', array $args = []) : PDOStatement
+    public function __call(string $method = '', array $args = []): PDOStatement
     {
-        if (is_callable(array($this->pdo, $method))) 
+        if (is_callable(array($this->pdo, $method)))
         {
             return call_user_func_array(array($this->pdo, $method), $args);
         }
-        else 
+        else
         {
             throw new BadMethodCallException('Undefined method Database::' . $method);
         }
@@ -67,10 +73,10 @@ class Database
     /**
      * @param string $sql
      * @param array $args
-     * 
+     *
      * @return PDOStatement
      */
-    public function run(string $sql = '', array $args = []) : PDOStatement
+    public function run(string $sql = '', array $args = []): PDOStatement
     {
         if (!$args)
         {

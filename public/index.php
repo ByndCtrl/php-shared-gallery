@@ -1,6 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 require_once '../App/Init.php';
 require_once '../App/Errors.php';
 
-$router = new Core\Router();
+use Core\Request;
+use Core\Route;
+use Core\Router;
+
+$request = new Request();
+$route = new Route();
+$router = new Router($route, $request);
+
+$router->direct($request->getRequestMethod(), $request->getUrl());

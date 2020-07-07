@@ -18,11 +18,11 @@ mb_internal_encoding("UTF-8");
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-spl_autoload_register(function ($class) 
+spl_autoload_register(function ($class)
 {
-    $file = BASE_ROOT . str_replace('\\', '/', $class) .'.php';
+    $file = BASE_ROOT . str_replace('\\', '/', $class) . '.php';
 
-    if (file_exists($file)) 
+    if (file_exists($file))
     {
         require $file;
     }
