@@ -37,6 +37,8 @@ class Route
 
         $this->addRoute('POST', 'login', 'LoginController@login');
         $this->addRoute('POST', 'register', 'RegisterController@register');
+        $this->addRoute('POST', 'upload', 'UploadController@upload');
+        $this->addRoute('POST', 'deleteImage', 'ManagementController@deleteImage');
     }
 
     /**

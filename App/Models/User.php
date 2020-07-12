@@ -6,6 +6,7 @@ namespace App\Models;
 
 use Core\Model;
 use PDO;
+use PDOStatement;
 
 /**
  * Class User
@@ -22,7 +23,17 @@ class User extends Model
         return $this->DB->run($sql)->fetchAll(PDO::FETCH_OBJ);
     }
 
-    public function create(string $username, string $email, string $password, string $streetAddress, string $city, string $postcode, string $country): \PDOStatement
+    /**
+     * @param string $username
+     * @param string $email
+     * @param string $password
+     * @param string $streetAddress
+     * @param string $city
+     * @param string $postcode
+     * @param string $country
+     * @return PDOStatement
+     */
+    public function create(string $username, string $email, string $password, string $streetAddress, string $city, string $postcode, string $country): PDOStatement
     {
         $password = $this->encryptPassword($password);
 
@@ -74,7 +85,8 @@ class User extends Model
      */
     public function destroy($id): void
     {
-
+        $sql = "DELETE FROM users WHERE $id = :id";
+        $this->DB->run($sql, [$id]);
     }
 
     /**

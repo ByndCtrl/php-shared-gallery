@@ -48,3 +48,14 @@ define('POSTCODE_LONG_ERROR', 'Postcode input is too long.');
 
 // Login
 define('LOGIN_ERROR', 'Incorrect username & password combination.');
+
+// Image
+define('IMAGE_MISSING_FILE_ERROR', 'You must include a file to upload.');
+define('IMAGE_NAME_MISSING_ERROR', 'You must include an image name.');
+define('IMAGE_NAME_SHORT_ERROR', 'Image name must contain at least 3 characters.');
+define('IMAGE_NAME_LONG_ERROR', 'Image name must have less than 64 characters.');
+define('IMAGE_EXT_NOT_VALID_ERROR', 'Image must be of type PNG or JPEG.');
+define('IMAGE_LARGE_ERROR', 'Image must have a file size of less than 50MB.');
+
+// Upload
+define('UPLOAD_ERROR', 'Upload failed, please try again.');

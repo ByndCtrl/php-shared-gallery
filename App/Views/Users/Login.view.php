@@ -1,7 +1,5 @@
-<?php
-require APP_ROOT . '/Views/Templates/Head.tmpl.php'; ?>
-<?php
-require APP_ROOT . '/Views/Templates/Nav.tmpl.php'; ?>
+<?php require APP_ROOT . '/Views/Templates/Head.tmpl.php'; ?>
+<?php require APP_ROOT . '/Views/Templates/Nav.tmpl.php'; ?>
 
 <div class="container">
     <div class="row">
@@ -13,7 +11,7 @@ require APP_ROOT . '/Views/Templates/Nav.tmpl.php'; ?>
 
                 <!-- Username -->
                 <div class="form-group">
-                    <label for="username">Username</label>
+                    <label for="input-username">Username</label>
                     <input type="text" name="username" id="input-username" value="<?= $data['username']; ?>"
                            class="form-control <?= (!empty($errors['usernameError'])) ? 'is-invalid' : ''; ?>"
                            placeholder="Username" aria-describedby="help-username">
@@ -26,7 +24,7 @@ require APP_ROOT . '/Views/Templates/Nav.tmpl.php'; ?>
 
                 <!-- Password -->
                 <div class="form-group">
-                    <label for="password">Password</label>
+                    <label for="input-password">Password</label>
                     <input type="password" name="password" id="input-password" value="<?= $data['password']; ?>"
                            class="form-control <?= (!empty($errors['passwordError'])) ? 'is-invalid' : ''; ?>"
                            placeholder="Password" aria-describedby="help-password">
@@ -47,9 +45,9 @@ require APP_ROOT . '/Views/Templates/Nav.tmpl.php'; ?>
                 <button type="submit" class="btn btn-dark btn-block" value="Login">LOGIN</button>
 
                 <div class="form-group login-redirect">
-                    <small class="">Don't have an account? <a href="<?= URL_ROOT . 'register' ?>">Register
-                            here</a>.</small>
+                    <small class="">Don't have an account? <a href="<?= URL_ROOT . 'register' ?>">Register here</a>.</small>
                 </div>
+
             </form>
         </div>
 

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Core;
 
+use Throwable;
+
 /**
  * Class View
  * @package Core
@@ -32,7 +34,7 @@ class View
         {
             require APP_ROOT . "Views/$view.view.php";
         }
-        catch (\Throwable $t)
+        catch (Throwable $t)
         {
             $t->getMessage();
         }

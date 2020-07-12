@@ -1,10 +1,11 @@
-<?php
-require APP_ROOT . '/Views/Templates/Head.tmpl.php'; ?>
-<?php
-require APP_ROOT . '/Views/Templates/Nav.tmpl.php'; ?>
+<?php require APP_ROOT . '/Views/Templates/Head.tmpl.php'; ?>
+<?php require APP_ROOT . '/Views/Templates/Nav.tmpl.php'; ?>
 
+<div class="d-flex justify-content-center align-items-center">
+    <h1 class="mr-3 pr-3 align-top border-right inline-block align-content-center">404</h1>
+    <div class="inline-block align-middle">
+        <h2 class="font-weight-normal lead" id="desc">The page you requested was not found.</h2>
+    </div>
+</div>
 
-    404
-
-<?php
-require APP_ROOT . '/Views/Templates/Footer.tmpl.php'; ?>
+<?php require APP_ROOT . '/Views/Templates/Footer.tmpl.php'; ?>

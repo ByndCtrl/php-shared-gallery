@@ -4,6 +4,11 @@ declare(strict_types=1);
 
 namespace Core\Util;
 
+use Exception;
+use function bin2hex;
+use function random_bytes;
+use function session_status;
+
 /**
  * Class Session
  * @package Core\Util
@@ -17,17 +22,18 @@ class Session
 
     public function __construct()
     {
-        if (\session_status() === PHP_SESSION_NONE)
+        if (session_status() === PHP_SESSION_NONE)
         {
             session_start();
             $this->isActive = 'true';
             $this->activationTime = time();
             $this->sessionId = session_id();
+
             try
             {
-                $this->csrfToken = \bin2hex(\random_bytes(32));
+                $this->csrfToken = bin2hex(random_bytes(32));
             }
-            catch (\Exception $exception)
+            catch (Exception $exception)
             {
                 $this->destroy();
             }
@@ -100,7 +106,7 @@ class Session
      *
      * @return string|null
      */
-    public function getValue(string $key): ?string
+    public static function getValue(string $key): ?string
     {
         return isset($_SESSION[$key]) ? $_SESSION[$key] : null;
     }

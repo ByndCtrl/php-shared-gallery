@@ -9,4 +9,10 @@ function showPassword() {
         password.setAttribute('type', 'password');
         confirmPassword.setAttribute('type', 'password');
     }
-} 
+}
+
+document.querySelector('.custom-file-input').addEventListener('change',function(event){
+    let fileName = document.getElementById("input-image").files[0].name;
+    let nextSibling = event.target.nextElementSibling
+    nextSibling.innerText = fileName
+})
