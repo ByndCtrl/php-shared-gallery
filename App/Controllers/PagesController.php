@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Controllers;
 
+use App\Models\Image;
+use App\Models\User;
 use Core\Controller;
 use Core\View;
 
@@ -13,7 +15,7 @@ use Core\View;
  */
 class PagesController extends Controller
 {
-    private ?View $view = null;
+    private ?View $view;
 
     public function __construct()
     {
@@ -39,6 +41,24 @@ class PagesController extends Controller
         $this->view->render('Pages/About', $data);
     }
 
+    public function login()
+    {
+        $data = [
+            'title' => 'Login'
+        ];
+
+        $this->view->render('Pages/Login');
+    }
+
+    public function register()
+    {
+        $data = [
+            'title' => 'Register'
+        ];
+
+        $this->view->render('Pages/Register');
+    }
+
     public function notFound()
     {
         $data = [
@@ -46,5 +66,15 @@ class PagesController extends Controller
         ];
 
         $this->view->render('Pages/404', $data);
+    }
+
+    /**
+     * @return string
+     */
+    public function ajaxTest()
+    {
+        $image = new Image();
+        $count = $image->getCount();
+        echo json_encode($count);
     }
 }

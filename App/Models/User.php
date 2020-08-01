@@ -17,7 +17,7 @@ class User extends Model
     /**
      * @return array
      */
-    public function index(): array
+    public function getAll(): array
     {
         $sql = "SELECT * FROM users";
         return $this->DB->run($sql)->fetchAll(PDO::FETCH_OBJ);
@@ -46,38 +46,34 @@ class User extends Model
     /**
      * @param int $id
      *
-     * @return array
+     * @return object
      */
-    public function show(int $id): array
+    public function get(int $id): object
     {
         $sql = "SELECT * FROM users WHERE id = :id";
         return $this->DB->run($sql, [$id])->fetch(PDO::FETCH_OBJ);
     }
 
     /**
-     * @param string $username
-     *
-     * @return array
+     * @param int $id
+     * @param string $newEmail
+     * @return PDOStatement
      */
-    public function showByUsername(string $username): array
+    public function editEmail(int $id, string $newEmail): PDOStatement
     {
-        $sql = "SELECT * FROM users WHERE username = :username";
-        if ($user = $this->DB->run($sql, [$username])->fetch(PDO::FETCH_ASSOC))
-        {
-            return $user;
-        }
-        else
-        {
-            return [];
-        }
+        $sql = "UPDATE users SET email = :email WHERE id = :id";
+        return $this->DB->run($sql, [$newEmail, $id]);
     }
 
     /**
      * @param $id
+     * @param $newPassword
+     * @return PDOStatement
      */
-    public function edit($id): void
+    public function editPassword($id, $newPassword): PDOStatement
     {
-
+        $sql = "UPDATE users SET password = :password WHERE id = :id";
+        return $this->DB->run($sql, [$newPassword, $id]);
     }
 
     /**
@@ -105,6 +101,10 @@ class User extends Model
         return $isAvailable['username'];
     }
 
+    /**
+     * @param string $email
+     * @return int
+     */
     public function isEmailAvailable(string $email): int
     {
         $sql = "SELECT COUNT(email) AS email FROM users WHERE email = :email";
@@ -121,5 +121,31 @@ class User extends Model
     public static function encryptPassword(string $password): string
     {
         return password_hash($password, PASSWORD_BCRYPT);
+    }
+
+
+    /**
+     * @param string $username
+     * @return object|null
+     */
+    public function getByUsername(string $username): ?object
+    {
+        $sql = "SELECT * FROM users WHERE username = :username";
+
+        // Return user object if it exists, otherwise return null.
+        return ($user = $this->DB->run($sql, [$username])->fetch(PDO::FETCH_OBJ)) ? $user : null;
+    }
+
+
+    /**
+     * @param string $username
+     * @return object|null
+     */
+    public function getIdByUsername(?string $username) : ?object
+    {
+        $sql = "SELECT id FROM users WHERE username = :username";
+
+        // Return user object if it exists, otherwise return null.
+        return ($user = $this->DB->run($sql, [$username])->fetch(PDO::FETCH_OBJ)) ? $user : null;
     }
 }

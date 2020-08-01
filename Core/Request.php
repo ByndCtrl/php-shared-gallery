@@ -13,11 +13,11 @@ class Request
     /**
      * @var string|null
      */
-    private ?string $url = null;
+    private ?string $url;
     /**
      * @var string|null
      */
-    private ?string $requestMethod = null;
+    private ?string $requestMethod;
 
     /**
      * Request constructor.

@@ -18,16 +18,11 @@ class ManagementController extends Controller
     /**
      * @var View|null
      */
-    private ?View $view = null;
+    private ?View $view;
     /**
      * @var Image|null
      */
-    private ?Image $image = null;
-
-    /**
-     * @var array
-     */
-    private array $data = [];
+    private ?Image $image;
 
     /**
      * ManagementController constructor.
@@ -44,8 +39,8 @@ class ManagementController extends Controller
      */
     public function index()
     {
-        $this->data = $this->image->getImagesAndUsers();
-        $this->view->render('Users/Management', $this->data);
+        $data = $this->image->getImagesAndUsers();
+        $this->view->render('Users/Management', $data);
     }
 
     /**
@@ -53,20 +48,32 @@ class ManagementController extends Controller
      */
     public function deleteImage() : void
     {
-        $post = Input::validatePost();
-
-        $id = $post['imageId'];
-
-        $files = $this->image->getFilePaths($id);
-
-        if ($files !== null)
+        if (isset($_POST['deleteImage']))
         {
-            unlink($files->path);
-            unlink($files->thumbnailPath);
-            $this->image->destroy($id);
-            $this->redirect('Management');
-        }
+            // Prevents header modification errors.
+            // "PHP will automatically flush everything in the buffer after the script finishes running"
+            // https://stackoverflow.com/questions/9707693/warning-cannot-modify-header-information-headers-already-sent-by-error
+            ob_start();
 
-        exit;
+            $post = Input::validatePost();
+
+            $id = $post['imageId'];
+
+            $files = $this->image->getFilePaths($id);
+
+            if($files != null)
+            {
+                if(unlink($files->path) && unlink($files->thumbnailPath))
+                {
+                    $this->image->destroy($id);
+                    $this->redirect('Management');
+                    exit;
+                }
+                else
+                {
+                    echo 'Failed to delete image.';
+                }
+            }
+        }
     }
 }

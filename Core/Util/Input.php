@@ -10,6 +10,15 @@ namespace Core\Util;
  */
 class Input
 {
+    public static function validateGet(): array
+    {
+        $get = filter_input_array(INPUT_GET, FILTER_SANITIZE_STRING);
+        $get = array_map('trim', $get);
+        $get = array_map('htmlspecialchars', $get);
+
+        return $get;
+    }
+
     /**
      * @return array
      */
@@ -22,7 +31,7 @@ class Input
         return $post;
     }
 
-    public static function validateFiles() : array
+    public static function validateFiles() : ?array
     {
         if(!empty($_FILES) && $_FILES != null)
         {
@@ -30,7 +39,7 @@ class Input
         }
         else
         {
-            return [];
+            return null;
         }
     }
 }

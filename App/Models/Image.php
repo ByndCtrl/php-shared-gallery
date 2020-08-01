@@ -15,17 +15,9 @@ use PDOStatement;
 class Image extends Model
 {
     /**
-     * Image constructor.
-     */
-    public function __construct()
-    {
-        parent::__construct();
-    }
-
-    /**
      * @return array
      */
-    public function index() : array
+    public function getAll() : array
     {
         $sql = "SELECT * FROM images";
         return $this->DB->run($sql)->fetchAll(PDO::FETCH_OBJ);
@@ -51,19 +43,10 @@ class Image extends Model
      * @param int $id
      * @return object
      */
-    public function show(int $id) : object
+    public function get(int $id) : object
     {
-        $sql = "SELECT * FROM images WHERE $id = :id";
+        $sql = "SELECT * FROM images WHERE id = :id";
         return $this->DB->run($sql, [$id])->fetch(PDO::FETCH_OBJ);
-    }
-
-    /**
-     * @param int $id
-     * @return void
-     */
-    public function edit(int $id) : void
-    {
-
     }
 
     /**
@@ -106,5 +89,14 @@ class Image extends Model
         {
             return null;
         }
+    }
+
+    /**
+     * @return int
+     */
+    public function getCount() : int
+    {
+        $sql = "SELECT COUNT(*) FROM images AS image_count";
+        return $this->DB->run($sql)->rowCount();
     }
 }

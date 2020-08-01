@@ -1,0 +1,99 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Controllers;
+
+use App\Models\User;
+use App\Validation\SettingsValidator;
+use App\Validation\Validator;
+use Core\Controller;
+use Core\View;
+
+/**
+ * Class SettingsController
+ * @package App\Controllers
+ */
+class SettingsController extends Controller
+{
+    private ?View $view = null;
+    private ?User $user = null;
+    private ?Validator $validator = null;
+    private int $userId = 0;
+
+    public function __construct()
+    {
+        parent::__construct();
+        $this->view = new View();
+        $this->user = new User();
+        $this->validator = new SettingsValidator($this->user);
+        $this->userId = (int)$this->session::getValue('userId');
+    }
+
+    public function index()
+    {
+        $data = [
+            'currentEmail' => $currentEmail = $this->user->get($this->userId)->email
+        ];
+
+        $this->view->render('Users/Settings', $data);
+    }
+
+    public function updateEmail()
+    {
+        ob_start();
+
+        if($this->validator->validate())
+        {
+            if ($this->user->editEmail($this->userId, $this->validator->getData('newEmail')))
+            {
+                $this->redirect('Settings');
+            }
+            else
+            {
+                $errors = [
+                    'email' => EMAIL_UPDATE_ERROR
+                ];
+
+                $this->view->render('Users/Settings', $this->validator->getAllData(), $errors);
+            }
+        }
+        else
+        {
+            $this->view->render('Users/Settings', $this->validator->getAllData(), $this->validator->getAllErrors());
+        }
+    }
+
+    public function updatePassword()
+    {
+        ob_start();
+
+        if($this->validator->validate())
+        {
+            if ($this->user->editPassword($this->userId, $this->validator->getData('newPassword')))
+            {
+                $this->redirect('Settings');
+            }
+            else
+            {
+                $errors = [
+                    'password' => PASSWORD_UPDATE_ERROR
+                ];
+
+                $this->view->render('Users/Settings', $this->validator->getAllData(), $errors);
+            }
+        }
+        else
+        {
+            $this->view->render('Users/Settings', $this->validator->getAllData(), $this->validator->getAllErrors());
+        }
+    }
+
+    public function deleteAccount()
+    {
+        $this->session->destroy();
+        $this->user->destroy((int)$this->session::getValue('userId'));
+        $this->redirect('/');
+        exit;
+    }
+}

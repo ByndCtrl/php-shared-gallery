@@ -14,16 +14,16 @@ use ImagickException;
 class ThumbnailGenerator
 {
     private ?Imagick $thumbnail = null;
-    private int $maxSize = 160;
 
     /**
+     * @param int $resolution
      * @param string $filePath
      * @param string $thumbnailPath
      *
      * @return void
      * @throws ImagickException
      */
-    public function createThumbnail(string $filePath, string $thumbnailPath) : void
+    public function createThumbnail(int $resolution, string $filePath, string $thumbnailPath) : void
     {
         $thumbnail = new Imagick($filePath);
 
@@ -31,16 +31,16 @@ class ThumbnailGenerator
         if($thumbnail->getImageHeight() <= $thumbnail->getImageWidth())
         {
             // Resize image based on X
-            $thumbnail->resizeImage($this->maxSize, 0, Imagick::FILTER_LANCZOS, 1);
+            $thumbnail->resizeImage($resolution, 0, Imagick::FILTER_LANCZOS, 1);
         }
         else
         {
             // Resize image based on Y
-            $thumbnail->resizeImage(0, $this->maxSize, Imagick::FILTER_LANCZOS, 1);
+            $thumbnail->resizeImage(0, $resolution, Imagick::FILTER_LANCZOS, 1);
         }
 
         // Set compression level (1 lowest quality, 100 highest quality)
-        $thumbnail->setImageCompressionQuality(25);
+        $thumbnail->setImageCompressionQuality(50);
 
         // Remove meta data
         $thumbnail->stripImage();

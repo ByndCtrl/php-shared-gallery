@@ -15,11 +15,11 @@ class Router
     /**
      * @var Request|null
      */
-    private ?Request $request = null;
+    private ?Request $request;
     /**
      * @var Route|null
      */
-    private ?Route $route = null;
+    private ?Route $route;
 
     /**
      * Router constructor.

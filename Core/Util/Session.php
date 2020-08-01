@@ -48,11 +48,13 @@ class Session
     /**
      * @param int $userId
      *
+     * @param string $username
      * @return void
      */
-    public function login(int $userId): void
+    public function login(int $userId, string $username): void
     {
         $this->addKeyValuePair('userId', (string)$userId);
+        $this->addKeyValuePair('username', $username);
         $this->addKeyValuePair('isLoggedIn', 'true');
     }
 
@@ -62,32 +64,36 @@ class Session
     public function logout(): void
     {
         $this->removeValue('userId');
+        $this->removeValue('username');
         $this->removeValue('isLoggedIn');
 
         $this->destroy();
     }
 
-    /**
-     * @param $userId
-     */
-    public function authenticate($userId)
+    public static function authenticate()
     {
-        if (!isset($_SESSION['isLoggedIn']) || $userId !== $_SESSION['userId'] || isset($_SESSION['userId']))
+        if (!self::isLoggedIn() || empty($_SESSION['userId']))
         {
+            $url = URL_ROOT . 'login';
+            header("Location: $url");
+            exit;
+        }
+    }
+
+    /**
+     * @param $csrf
+     */
+    public function validateCSRF(string $csrf) : void
+    {
+        if (!hash_equals($_SESSION['csrf'], $csrf)) {
             header('Location: /login');
+            exit;
         }
     }
 
     public static function isLoggedIn(): bool
     {
-        if (!empty($_SESSION['isLoggedIn']))
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+        return !empty(self::getValue('isLoggedIn'));
     }
 
     /**
@@ -108,7 +114,7 @@ class Session
      */
     public static function getValue(string $key): ?string
     {
-        return isset($_SESSION[$key]) ? $_SESSION[$key] : null;
+        return !empty($_SESSION[$key]) ? $_SESSION[$key] : null;
     }
 
     /**

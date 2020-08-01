@@ -3,7 +3,7 @@
 // Username
 define('USERNAME_NOT_EXISTS_ERROR', "Didn't find an account with specified username.");
 define('USERNAME_EXISTS_ERROR', 'Username already exists.');
-define('USERNAME_MISSING_ERROR', 'You must include a username.');
+define('USERNAME_MISSING_ERROR', 'You must enter a username.');
 define('USERNAME_SHORT_ERROR', 'Username must contain at least 3 characters.');
 define('USERNAME_LONG_ERROR', 'Username must have less than 64 characters.');
 
@@ -49,8 +49,11 @@ define('POSTCODE_LONG_ERROR', 'Postcode input is too long.');
 // Login
 define('LOGIN_ERROR', 'Incorrect username & password combination.');
 
+// Register
+define('REGISTER_ERROR', 'Something went wrong. Please try again.');
+
 // Image
-define('IMAGE_MISSING_FILE_ERROR', 'You must include a file to upload.');
+define('IMAGE_FILE_MISSING_ERROR', 'You must include a file to upload.');
 define('IMAGE_NAME_MISSING_ERROR', 'You must include an image name.');
 define('IMAGE_NAME_SHORT_ERROR', 'Image name must contain at least 3 characters.');
 define('IMAGE_NAME_LONG_ERROR', 'Image name must have less than 64 characters.');
@@ -59,3 +62,7 @@ define('IMAGE_LARGE_ERROR', 'Image must have a file size of less than 50MB.');
 
 // Upload
 define('UPLOAD_ERROR', 'Upload failed, please try again.');
+
+// Settings
+define('EMAIL_UPDATE_ERROR', 'Email update failed, please try again.');
+define('PASSWORD_UPDATE_ERROR', 'Password update failed, please try again.');
