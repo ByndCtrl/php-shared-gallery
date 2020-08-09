@@ -50,13 +50,23 @@ class Image extends Model
     }
 
     /**
-     * @param int $id
+     * @param string $id
      * @return void
      */
     public function destroy(string $id) : void
     {
         $sql = "DELETE FROM images WHERE id = ?";
         $stmt = $this->DB->run($sql, [$id]);
+    }
+
+    /**
+     * @param $id
+     * @return array
+     */
+    public function getUserUploads($id) : array
+    {
+        $sql = "SELECT * FROM images WHERE uploaderId = :id";
+        return $this->DB->run($sql, [$id])->fetchAll(PDO::FETCH_OBJ);
     }
 
     /**
@@ -94,9 +104,9 @@ class Image extends Model
     /**
      * @return int
      */
-    public function getCount() : int
+    public function getCount()
     {
-        $sql = "SELECT COUNT(*) FROM images AS image_count";
-        return $this->DB->run($sql)->rowCount();
+        $sql = "SELECT COUNT(`id`) FROM images AS `count`";
+        return $this->DB->run($sql)->fetchColumn();
     }
 }

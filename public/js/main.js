@@ -28,3 +28,4 @@ function showNewPassword()
         newPassword.setAttribute('type', 'password');
     }
 }
+

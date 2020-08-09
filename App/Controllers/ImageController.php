@@ -63,4 +63,14 @@ class ImageController extends Controller
 
         $this->view->render('Images/Explore', $data);
     }
+
+    /**
+     * @return string
+     */
+    public function getImageCountAjax()
+    {
+        $count = $this->image->getCount();
+        echo json_encode($count);
+        exit;
+    }
 }

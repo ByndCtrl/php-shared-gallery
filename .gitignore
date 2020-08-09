@@ -1,4 +1,7 @@
 App/app.sql
 App/Credentials.php
-public/assets/images/
-public/assets/thumbnails/
+public/assets/images/*
+public/assets/thumbnails/*
+!public/assets/images/.gitkeep
+!public/assets/thumbnails/.gitkeep
+.idea

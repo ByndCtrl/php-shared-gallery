@@ -46,9 +46,9 @@ class User extends Model
     /**
      * @param int $id
      *
-     * @return object
+     * @return object|null
      */
-    public function get(int $id): object
+    public function get(int $id): ?object
     {
         $sql = "SELECT * FROM users WHERE id = :id";
         return $this->DB->run($sql, [$id])->fetch(PDO::FETCH_OBJ);
@@ -81,7 +81,7 @@ class User extends Model
      */
     public function destroy($id): void
     {
-        $sql = "DELETE FROM users WHERE $id = :id";
+        $sql = "DELETE FROM users WHERE id = :id";
         $this->DB->run($sql, [$id]);
     }
 

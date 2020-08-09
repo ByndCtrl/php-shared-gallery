@@ -43,7 +43,7 @@ class Route
         $this->addRoute('POST', 'settings/updatePassword', 'SettingsController@updatePassword');
         $this->addRoute('POST', 'settings/deleteAccount', 'SettingsController@deleteAccount');
 
-        $this->addRoute('POST', 'pages/ajaxTest', 'PagesController@ajaxTest');
+        $this->addRoute('POST', 'image/getImageCountAjax', 'ImageController@getImageCountAjax');
     }
 
     /**

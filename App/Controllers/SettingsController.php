@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controllers;
 
+use App\Models\Image;
 use App\Models\User;
 use App\Validation\SettingsValidator;
 use App\Validation\Validator;
@@ -32,8 +33,12 @@ class SettingsController extends Controller
 
     public function index()
     {
+        $this->session::authenticate();
+
+        $currentEmail = $this->user->get($this->userId);
+
         $data = [
-            'currentEmail' => $currentEmail = $this->user->get($this->userId)->email
+            'currentEmail' => $currentEmail
         ];
 
         $this->view->render('Users/Settings', $data);
@@ -91,8 +96,27 @@ class SettingsController extends Controller
 
     public function deleteAccount()
     {
+        ob_start();
+
+        $userId = (int)$this->session::getValue('userId');
+
+        $image = new Image();
+        $data = $image->getUserUploads($userId);
+
+        for ($i = 0; $i<count($data); $i++)
+        {
+            if ($data[$i]->path !== null && $data[$i]->thumbnailPath !== null)
+            {
+                if (!empty($data[$i]->path) && !empty($data[$i]->thumbnailPath))
+                {
+                    unlink($data[$i]->path);
+                    unlink($data[$i]->thumbnailPath);
+                }
+            }
+        }
+
+        $this->user->destroy($userId);
         $this->session->destroy();
-        $this->user->destroy((int)$this->session::getValue('userId'));
         $this->redirect('/');
         exit;
     }

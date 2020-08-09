@@ -3,52 +3,59 @@
 
 <div class="container">
     <div class="row">
-        <div class="col-4"></div>
+
 
         <div class="col-4 centered">
+            <h1 class="text-center p-5" id="imageCount"></h1>
             <button class="btn btn-block btn-outline-dark font-weight-bold" value="Image Count" id="showImageCount">
                 Image Count
             </button>
 
-            <div id="imageCount">
-
-            </div>
         </div>
 
-        <div class="col-4"></div>
     </div>
 </div>
 
 <?php require APP_ROOT . '/Views/Templates/Footer.tmpl.php'; ?>
 
 <script>
-let isActive = false;
-let imageCountContainer = document.getElementById("imageCount");
-let showImageCountButton = document.getElementById("showImageCount");
+    var showImageCountButton = document.getElementById("showImageCount");
+    var imageCountContainer = document.getElementById("imageCount");
+    let isActive = false;
 
-showImageCountButton.addEventListener("click", getImageCount);
+    showImageCountButton.addEventListener("click", getImageCount);
+    showImageCountButton.addEventListener("click", fade);
 
-function getImageCount()
-{
-    if (isActive === false)
+    function getImageCount()
     {
-        let request = new XMLHttpRequest();
-        request.open('POST', 'pages/ajaxTest');
-        request.onload = function()
+        if (isActive === false)
         {
-            if (request.status >= 200 && request.status < 400)
+            let request = new XMLHttpRequest();
+            request.open('POST', 'image/getImageCountAjax');
+            request.onload = function()
             {
-                let data = JSON.parse(request.responseText);
-                displayImageCount(data);
-            }
-        };
-        request.send();
-        isActive = true;
+                if (request.status >= 200 && request.status < 400)
+                {
+                    let data = JSON.parse(request.responseText);
+                    displayImageCount(data);
+                }
+            };
+            request.send();
+            isActive = true;
+        }
     }
-}
 
-function displayImageCount(data)
-{
-    imageCountContainer.insertAdjacentHTML('beforeend', data);
-}
+    function displayImageCount(data)
+    {
+        imageCountContainer.insertAdjacentHTML('beforeend', data);
+    }
+
+    function fade()
+    {
+        showImageCountButton.onclick = function ()
+        {
+            imageCountContainer.classList.toggle('fade');
+        }
+    }
+
 </script>

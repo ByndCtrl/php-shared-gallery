@@ -1,4 +1,4 @@
-<?php /** @noinspection PhpIncludeInspection */
+<?php
 /** @noinspection PhpIncludeInspection */
 
 define('DS', DIRECTORY_SEPARATOR);

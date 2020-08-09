@@ -27,8 +27,6 @@ class UploadValidator extends Validator
 
         $this->validateName($post['name']);
         $this->validateFile($file);
-       // $this->validateExtension($file['image']['type']);
-        //$this->validateSize($file['image']['size']);
 
         return !array_filter($this->getAllErrors()) ? $isValid = true : $isValid = false;
     }

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Controllers;
 
 use App\Models\Image;
-use App\Models\User;
 use Core\Controller;
 use Core\View;
 
@@ -15,15 +14,24 @@ use Core\View;
  */
 class PagesController extends Controller
 {
+    /**
+     * @var View|null
+     */
     private ?View $view;
 
+    /**
+     * PagesController constructor.
+     */
     public function __construct()
     {
         parent::__construct();
         $this->view = new View();
     }
 
-    public function index()
+    /**
+     * @return void
+     */
+    public function index() : void
     {
         $data = [
             'title' => 'Landing'
@@ -32,7 +40,10 @@ class PagesController extends Controller
         $this->view->render('Pages/Landing', $data);
     }
 
-    public function about()
+    /**
+     * @return void
+     */
+    public function about() : void
     {
         $data = [
             'title' => 'About'
@@ -41,7 +52,10 @@ class PagesController extends Controller
         $this->view->render('Pages/About', $data);
     }
 
-    public function login()
+    /**
+     * @return void
+     */
+    public function login() : void
     {
         $data = [
             'title' => 'Login'
@@ -50,7 +64,10 @@ class PagesController extends Controller
         $this->view->render('Pages/Login');
     }
 
-    public function register()
+    /**
+     * @return void
+     */
+    public function register() : void
     {
         $data = [
             'title' => 'Register'
@@ -59,22 +76,15 @@ class PagesController extends Controller
         $this->view->render('Pages/Register');
     }
 
-    public function notFound()
+    /**
+     * @return void
+     */
+    public function notFound() : void
     {
         $data = [
             'title' => '404'
         ];
 
         $this->view->render('Pages/404', $data);
-    }
-
-    /**
-     * @return string
-     */
-    public function ajaxTest()
-    {
-        $image = new Image();
-        $count = $image->getCount();
-        echo json_encode($count);
     }
 }
