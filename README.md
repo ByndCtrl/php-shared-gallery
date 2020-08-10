@@ -12,13 +12,13 @@ sudo chown -R $USER:$USER /var/www
 sudo chmod -R 755 /var/www
 ```
 
-##### Download the project:
+##### Download the project
 ```
 cd /var/www/
 git clone https://github.com/ByndCtrl/php-shared-gallery
 ```
 
-##### Create virtual host: 
+##### Create virtual host
 ```
 sudo nano /etc/apache2/sites-available/php-shared-gallery.conf
 ```
@@ -45,7 +45,7 @@ sudo nano /etc/apache2/sites-available/php-shared-gallery.conf
 sudo a2ensite php-shared-gallery.conf
 ```
 
-##### Allow local address recognition:
+##### Allow local address recognition
  ```
 sudo nano /etc/hosts
 ```
@@ -54,7 +54,7 @@ sudo nano /etc/hosts
 127.0.0.1 php-shared-gallery.com
 ```
 
-##### Allow override for .htaccess files:
+##### Allow override for .htaccess files
 ```
 sudo nano /etc/apache2/apache2.conf
 ```
@@ -67,7 +67,7 @@ sudo nano /etc/apache2/apache2.conf
 </Directory>
 ```
 
-##### Restart apache:
+##### Restart apache
 ```
 sudo systemctl restart apache2
 ```
@@ -108,3 +108,18 @@ php-shared-gallery/
     README.md           # Documentation
 ```
 
+## Possible Issues
+
+##### 1. PHP isn't being parsed.
+###### Copy & paste the following:
+```
+sudo a2dismod mpm_event && sudo a2enmod mpm_prefork && sudo a2enmod php7.4
+systemctl restart apache2
+```
+
+##### 2. Routing isn't working.
+###### Enable mod rewriting for .htaccess files:
+```
+a2enmod rewrite
+systemctl restart apache2
+```
