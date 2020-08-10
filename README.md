@@ -4,7 +4,7 @@ An MVC App from scratch in PHP.
 
 ## Installation
 
-#####Install Apache, MySQL and PHP. (LAMP Stack)
+##### Install Apache, MySQL and PHP. (LAMP Stack)
 
 ##### Set up permissions
 ```

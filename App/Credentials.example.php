@@ -10,6 +10,6 @@ class Credentials
 {
     const DB_HOST = 'localhost';
     const DB_NAME = 'shared_gallery';
-    const DB_USER = 'user';
-    const DB_PASSWORD = 'password';
+    const DB_USER = 'root';
+    const DB_PASSWORD = '';
 }
