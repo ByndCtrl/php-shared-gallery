@@ -1,16 +1,15 @@
-<?php
-/** @noinspection PhpIncludeInspection */
+<?php /** @noinspection PhpIncludeInspection */
 
 define('DS', DIRECTORY_SEPARATOR);
 
-// /var/www/html/php-shared-gallery/
+// /var/www/php-shared-gallery.com/
 define('BASE_ROOT', dirname(__FILE__, 2) . DS);
 
-// /var/www/html/php-shared-gallery/App/
+// /var/www/php-shared-gallery.com/App/
 define('APP_ROOT', dirname(__FILE__, 1) . DS);
 
-// http://localhost/php-shared-gallery/
-define('URL_ROOT', 'http://localhost/php-shared-gallery/');
+// http://php-shared-gallery.com/
+define('URL_ROOT', 'http://php-shared-gallery.com' . DS);
 
 define('SITE_NAME', 'SharedGallery');
 

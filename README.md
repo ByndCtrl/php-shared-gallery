@@ -85,3 +85,26 @@ Enter your database username and password
 cd ..
 php install.php
 ```
+
+## Directory Structure
+
+```
+php-shared-gallery/
+    App/                # Application Files
+        Controllers/        # Controller classes
+        Models/             # Model classes
+        Validation/         # Input validation classes
+        Views/              # Views and templates
+    Core/               # MVC Files
+        Util/               # Utility classes
+    public/             # Publicly accessible files
+        assets/             # Uploaded images and thumbnails
+        css/                # CSS Files
+        js/                 # JS Files
+        index.php           # Main entry point
+    SampleImages/       # Images to upload
+    .gitignore          # Ignored files
+    install.php         # Database setup script
+    README.md           # Documentation
+```
+
