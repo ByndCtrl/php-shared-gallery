@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Controllers;
 
 use Core\Controller;
-use Core\Util\Session;
 use Core\View;
 use App\Models\User;
 use App\Validation\LoginValidator;
@@ -54,8 +53,19 @@ class LoginController extends Controller
         {
             $userId = $user->getIdByUsername($validator->getData('username'));
 
-            // Login user if there are no errors found during validation.
+            // Session
             $this->session->login((int)$userId->id, $validator->getData('username'));
+
+            // Cookie
+            $rememberMe = !empty($validator->post['rememberMe']) ? $validator->post['rememberMe'] : null;
+            if ($rememberMe != null)
+            {
+                $time = time()+(60*60*24*30);
+
+                setcookie('userId', (string)$userId->id, $time);
+                setcookie('username', (string)$validator->getData('username'), $time);
+                setcookie('active', '1', $time);
+            }
 
             $this->redirect('Management');
         }
@@ -72,6 +82,12 @@ class LoginController extends Controller
     public function logout() : void
     {
         $this->session->logout();
+
+        // Unset cookie
+        setcookie('userId', '', 1);
+        setcookie('username', '', 1);
+        setcookie('active', '0', 1);
+
         $this->redirect(' ');
     }
 }

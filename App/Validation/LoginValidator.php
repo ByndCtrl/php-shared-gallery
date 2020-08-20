@@ -17,6 +17,8 @@ class LoginValidator extends Validator
      */
     private ?User $user;
 
+    public array $post;
+
     /**
      * LoginValidator constructor.
      * @param User $user
@@ -31,9 +33,10 @@ class LoginValidator extends Validator
      */
     public function validate() : bool
     {
-        $post = Input::validatePost();
-        $this->validateUsername($post['username']);
-        $this->validatePassword($post['password']);
+        $this->post = Input::validatePost();
+        $this->validateUsername($this->post['username']);
+        $this->validatePassword($this->post['password']);
+
         return !array_filter($this->getAllErrors()) ? $isValid = true : $isValid = false;
     }
 

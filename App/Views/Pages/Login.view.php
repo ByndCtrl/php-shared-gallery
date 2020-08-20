@@ -4,7 +4,7 @@
 <div class="container">
 
     <div class="d-flex justify-content-center flex-wrap flex-md-nowrap align-items-center p-4 mb-3 border-bottom">
-        <h1>Login</h1>
+        <h2 class="font-weight-bold">Login</h2>
     </div>
 
         <!-- Login Form-->
@@ -34,8 +34,8 @@
 
                 <!-- Remember Me -->
                 <div class="mb-3 form-check">
-                    <input type="checkbox" class="form-check-input" id="remember-me">
-                    <label class="form-check-label" for="remember-me">Remember me</label>
+                    <input type="checkbox" class="form-check-input" name="rememberMe" id="rememberMe">
+                    <label class="form-check-label" for="rememberMe">Remember me</label>
                 </div>
 
                 <small id="error-register" class="text-danger"><?= !empty($errors['login']) ? $errors['login'] : ''; ?></small>

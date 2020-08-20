@@ -4,7 +4,6 @@
 <div class="container">
     <div class="row">
 
-
         <div class="col-4 centered">
             <h1 class="text-center p-5" id="imageCount"></h1>
             <button class="btn btn-block btn-outline-dark font-weight-bold" value="Image Count" id="showImageCount">

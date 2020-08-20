@@ -11,6 +11,7 @@
 <div class="container">
 
     <h3 class="text-center">Uploads</h3>
+
     <div class="col-lg-12 col-sm-6">
 
             <table class="table table-light table border table-striped table-hover table-responsive-sm w-100 d-block d-md-table caption-top">

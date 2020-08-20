@@ -74,16 +74,30 @@ sudo systemctl restart apache2
 
 ##### Set up database
 ```
+Log in to MySQL using:
+mysql -u [username] -p
+
+At the MySQL prompt, enter:
+source /var/www/php-shared-gallery/App/app.sql
+```
+
+##### Set up database credentials
+```
 cd /var/www/php-shared-gallery/App
 cp Credentials.example.php Credentials.php
 
-Enter your database username and password
+Enter your MySQL username and password in Credentials.php.
 ```
 
-##### Run installation script
+## PHP Packages
+###### The following packages are required:
+##### mbstring
 ```
-cd ..
-php install.php
+apt-get install php7.4-mbstring
+```
+##### Imagick
+```
+apt-get install php7.4-imagick
 ```
 
 ## Directory Structure
@@ -104,7 +118,6 @@ php-shared-gallery/
         index.php           # Main entry point
     SampleImages/       # Images to upload
     .gitignore          # Ignored files
-    install.php         # Database setup script
     README.md           # Documentation
 ```
 

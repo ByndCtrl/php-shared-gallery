@@ -48,24 +48,32 @@ class UploadController extends Controller
             $thumbnailPath = $this->getImageThumbnailPath($name, $type);
 
             // Move original version of the image
-            move_uploaded_file($tmpName, $path);
-
-            $uploaderId = $this->session->getValue('userId');
-
-            if($this->image->create((int)$uploaderId, $name, $path, $thumbnailPath, $size))
+            if(move_uploaded_file($tmpName, $path))
             {
-                // Create a resized and downsampled thumbnail of the original image
-                $thumbnailGenerator = new ThumbnailGenerator();
-                $thumbnailGenerator->createThumbnail(240, $path, $thumbnailPath);
+                $uploaderId = $this->session->getValue('userId');
 
-                $this->redirect('Management');
+                if($this->image->create((int)$uploaderId, $name, $path, $thumbnailPath, $size))
+                {
+                    // Create a resized and downsampled thumbnail of the original image
+                    $thumbnailGenerator = new ThumbnailGenerator();
+                    $thumbnailGenerator->createThumbnail(240, $path, $thumbnailPath);
+
+                    $this->redirect('Management');
+                }
+                else
+                {
+                    $errors = [
+                        'upload' => UPLOAD_ERROR
+                    ];
+
+                    $this->view->render('Users/Upload', $validator->getAllData(), $errors);
+                }
             }
             else
             {
                 $errors = [
                     'upload' => UPLOAD_ERROR
                 ];
-
                 $this->view->render('Users/Upload', $validator->getAllData(), $errors);
             }
         }

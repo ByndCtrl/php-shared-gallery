@@ -4,7 +4,7 @@
 <div class="container">
 
     <div class="d-flex justify-content-center flex-wrap flex-md-nowrap align-items-center p-4 mb-3 border-bottom">
-        <h1>Register</h1>
+        <h2 class="font-weight-bold">Register</h2>
     </div>
 
         <!-- Register Form -->

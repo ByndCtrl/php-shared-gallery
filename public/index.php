@@ -13,11 +13,4 @@ $request = new Request();
 $route = new Route();
 $router = new Router($route, $request);
 
-try
-{
-    $router->direct($request->getRequestMethod(), $request->getUrl());
-}
-catch (Exception $e)
-{
-
-}
+$router->direct($request->getRequestMethod(), $request->getUrl());
